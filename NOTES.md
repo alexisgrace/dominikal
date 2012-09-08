@@ -25,8 +25,7 @@ CARDS
 
 TURN OPERATIONS
 ---------------
-Commands menu
-
+Commands menu:
 1. Draw
 2. Play
   * copper
@@ -39,11 +38,14 @@ METHODS
 Draw()
   * remove from library
   * put in hand
+
 Play()
   * remove from hand -> play
+
 Buy()
   * remove from stockpiles -> discard
   * check $ > cost (later)
+
 DiscardFromPlay()
   * remove from play -> discard
 
