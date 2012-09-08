@@ -25,13 +25,13 @@ CARDS
 
 TURN OPERATIONS
 ---------------
-Commands menu:
-1. Draw
-2. Play
+Commands menu:  
+1. Draw  
+2. Play  
   * copper
   * estate
   * etc.
-3. Buy
+3. Buy  
 
 METHODS
 -------
