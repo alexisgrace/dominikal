@@ -35,18 +35,15 @@ Commands menu:
 
 METHODS
 -------
-Draw()
+* Draw()
   * remove from library
   * put in hand
-
-Play()
+* Play()
   * remove from hand -> play
-
-Buy()
+* Buy()
   * remove from stockpiles -> discard
   * check $ > cost (later)
-
-DiscardFromPlay()
+* DiscardFromPlay()
   * remove from play -> discard
 
 STORAGE OBJECTS
