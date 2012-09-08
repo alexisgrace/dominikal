@@ -25,7 +25,7 @@ CARDS
 
 TURN OPERATIONS
 ---------------
-Commands menu:  
+Commands menu: 
 * draw
 * play
   * copper
