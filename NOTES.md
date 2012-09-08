@@ -13,18 +13,26 @@ ZONES
 * trash
 
 CARDS
-=====
-money: copper, silver, gold
-victory: estate, duchy, province
-card class methods
-  money()
-  VPs()
-  cost()
-  name()
-  value()
+-----
+* money: copper, silver, gold
+* victory: estate, duchy, province
+* card class methods
+  * money()
+  * VPs()
+  * cost()
+  * name()
+  * value()
 
 TURN OPERATIONS
+---------------
+Commands menu
 
+1. Draw
+2. Play
+* copper
+* estate
+* etc.
+3. Buy
 
 
 
