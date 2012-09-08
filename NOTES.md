@@ -29,9 +29,9 @@ Commands menu
 
 1. Draw
 2. Play
-* copper
-* estate
-* etc.
+  * copper
+  * estate
+  * etc.
 3. Buy
 
 
