@@ -1,15 +1,16 @@
+NOTES
+=====
 Notes from brainstorming session 08 Sept 2012
-========================================
 
 ZONES
-=====
-deck
-hand
-play
-money play
-library
-discard
-trash
+-----
+* deck
+* hand
+* play
+* money play
+* library
+* discard
+* trash
 
 CARDS
 =====
