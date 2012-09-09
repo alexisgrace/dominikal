@@ -12,6 +12,19 @@ ZONES
 * stockpiles
 * trash
 
+Here's an API for these zone card containers
+* put_card_on_bottom()
+* put_card_on_top()
+* shuffle()
+* shuffle_top_cards(n)
+* draw_card()
+* find_specific_card()
+* find_first_card_matching(function)
+* reveal_top_n_cards()
+* reveal_cards_matching(function)
+
+In this model, the zones are dumb containers, giving and taking what you ask.
+
 CARDS
 -----
 * money: copper, silver, gold
