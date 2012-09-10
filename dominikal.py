@@ -2,9 +2,13 @@
 
 import random
 
+# for now:
+# 1 = copper
+# 0 = estate
 hand = [];
 library = [1]*7 + [0]*3;
 discard = [];
+stockpile = [1]*10 + [0]*10 
 
 
 def shuffle(zone) :
@@ -37,9 +41,11 @@ def discard_hand():
   hand = []
 
 def buy_estate():
+  stockpile.remove(0)
   discard.append(0)
 
 def buy_copper():
+  stockpile.remove(1)
   discard.append(1)
 
 def dumb_buy_CE_only():
@@ -57,9 +63,23 @@ def init_game(): # Throwaway to make testing easier
   print_all()
 
 def print_all():
-  print 'Library: ' + str(library)
-  print 'Hand   : ' + str(hand)
-  print 'Discard: ' + str(discard)
+  print 'Library  : ' + str(library)
+  print 'Hand     : ' + str(hand)
+  print 'Discard  : ' + str(discard)
+  print 'Stockpile:' + str(stockpile)
+
+def is_game_over():
+    """
+    evaluate whether the game has ended
+    """
+
+    # game ends if there are no more estates in the stockpile
+    if stockpile.count(0) == 0:
+        print '--> Zero Estates left -- GAME OVER --'
+        return True
+
+    # game continues if no end-game conditions are met
+    return False
   
 
 def main() :
@@ -74,6 +94,7 @@ def main() :
     discard_hand()
     draw_hand()
     print_all()
- 
+    if is_game_over(): break 
+
 if __name__ == "__main__":
   main()
