@@ -1,6 +1,11 @@
 #!/usr/bin/env python
 
 import random
+import logging
+
+
+# Change to logging.DEBUG for more, logging.WARNING for less.
+logging.basicConfig(level=logging.INFO, format='%(message)s') 
 
 # for now:
 # 1 = copper
@@ -27,34 +32,41 @@ def draw_hand():
     try:
       draw_card()
     except IndexError: # throws if empty
+      logging.debug('Library is empty. Shuffling in discard pile.')
       library.extend(discard)
       discard=[]
       shuffle(library)
       draw_card()
 
 def draw_card():
+  logging.debug('Drawing one card.')
   hand.append(library.pop(0))
 
 def discard_hand():
   global hand
+  logging.debug('Discarding remaining hand.')
   discard.extend(hand)
   hand = []
 
 def buy_estate():
+  logging.debug('Buying an estate. Placing it in the discard pile.')
   stockpile.remove(0)
   discard.append(0)
 
 def buy_copper():
+  logging.debug('Buying a copper. Placing it in the discard pile.')
   stockpile.remove(1)
   discard.append(1)
 
 def dumb_buy_CE_only():
+  logging.debug('My Hand is : ' + str(hand))
+  logging.debug('Deciding what to buy...')
   money = hand.count(1)
   if money>=2:
-    print 'money = ' + str(money) + '. Buy Estate.'
+    logging.debug('money = ' + str(money) + '. Buy Estate.')
     buy_estate()
   else:
-    print 'money = ' + str(money) + '. Buy Copper.'
+    logging.debug('money = ' + str(money) + '. Buy Copper.')
     buy_copper()
 
 def init_game(): # Throwaway to make testing easier
@@ -63,10 +75,10 @@ def init_game(): # Throwaway to make testing easier
   print_all()
 
 def print_all():
-  print 'Library  : ' + str(library)
-  print 'Hand     : ' + str(hand)
-  print 'Discard  : ' + str(discard)
-  print 'Stockpile:' + str(stockpile)
+  logging.info('Library  : ' + str(library))
+  logging.info('Hand     : ' + str(hand))
+  logging.info('Discard  : ' + str(discard))
+  logging.info('Stockpile: ' + str(stockpile))
 
 def is_game_over():
     """
@@ -75,7 +87,7 @@ def is_game_over():
 
     # game ends if there are no more estates in the stockpile
     if stockpile.count(0) == 0:
-        print '--> Zero Estates left -- GAME OVER --'
+        logging.info('--> Zero Estates left -- GAME OVER --')
         return True
 
     # game continues if no end-game conditions are met
@@ -83,13 +95,20 @@ def is_game_over():
   
 
 def main() :
+  logging.info('--> Starting the game. Shuffle the library and draw 5 cards.')
   shuffle(library)
   draw_hand()
   print_all()
 
   n_turns = 1000;
   for i in range(n_turns):  
-    print 'Turn ' + str(i)
+    # A turn has the following actions in order:
+    #  - Play action cards
+    #  - Play money in any order
+    #  - Buy cards, placing them in the discard pile
+    #  - Discard remaining cards in hand
+    #  - Draw a new hand of 5 cards
+    logging.info('\n === Turn ' + str(i+1) + ' === ')
     dumb_buy_CE_only()
     discard_hand()
     draw_hand()
