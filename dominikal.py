@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-import random
 import logging
+import DPlayer
 
 
 # Change to logging.DEBUG for more, logging.WARNING for less.
@@ -10,74 +10,42 @@ logging.basicConfig(level=logging.INFO, format='%(message)s')
 # for now:
 # 1 = copper
 # 0 = estate
-hand = [];
-library = [1]*7 + [0]*3;
-discard = [];
 stockpile = [1]*10 + [0]*10 
 
+def buy_card(player, card):
+    logging.debug('Buying a card.')
+    try: 
+        stockpile.remove(card)
+        player.discard.append(card)
+    except ValueError:
+        logging.info('Card %s is not available' % card)
 
-def shuffle(zone) :
-  """
-  Shuffles the zone as if it were a list.
-  random.random() uses a Mersenne twister with a period of 2**19937-1,
-  or ~1e6300. The number of permutations of lists grows combinatorically,
-  but for even a 200 card deck, there are only 1e460 permutations, so 
-  the random.shuffle() method should hit all of these.
-  """
-  random.shuffle(zone)
 
-def draw_hand():
-  global discard
-  for i in range(5):
-    try:
-      draw_card()
-    except IndexError: # throws if empty
-      logging.debug('Library is empty. Shuffling in discard pile.')
-      library.extend(discard)
-      discard=[]
-      shuffle(library)
-      draw_card()
-
-def draw_card():
-  logging.debug('Drawing one card.')
-  hand.append(library.pop(0))
-
-def discard_hand():
-  global hand
-  logging.debug('Discarding remaining hand.')
-  discard.extend(hand)
-  hand = []
-
-def buy_estate():
+def buy_estate(player):
   logging.debug('Buying an estate. Placing it in the discard pile.')
-  stockpile.remove(0)
-  discard.append(0)
+  buy_card(player, 0)
 
-def buy_copper():
+def buy_copper(player):
   logging.debug('Buying a copper. Placing it in the discard pile.')
-  stockpile.remove(1)
-  discard.append(1)
+  buy_card(player, 1)
 
-def dumb_buy_CE_only():
-  logging.debug('My Hand is : ' + str(hand))
+def dumb_buy_CE_only(player):
+  logging.debug('My Hand is : ' + str(player.hand))
   logging.debug('Deciding what to buy...')
-  money = hand.count(1)
+  money = player.count_money()
   if money>=2:
     logging.debug('money = ' + str(money) + '. Buy Estate.')
-    buy_estate()
+    buy_estate(player)
   else:
     logging.debug('money = ' + str(money) + '. Buy Copper.')
-    buy_copper()
+    buy_copper(player)
 
 def init_game(): # Throwaway to make testing easier
-  shuffle(library)
-  draw_hand()
+  test_player.draw_hand()
+  test_player.print_all()
   print_all()
 
 def print_all():
-  logging.info('Library  : ' + str(library))
-  logging.info('Hand     : ' + str(hand))
-  logging.info('Discard  : ' + str(discard))
   logging.info('Stockpile: ' + str(stockpile))
 
 def is_game_over():
@@ -96,12 +64,23 @@ def is_game_over():
 
 def main() :
   logging.info('--> Starting the game. Shuffle the library and draw 5 cards.')
-  shuffle(library)
-  draw_hand()
-  print_all()
 
-  n_turns = 1000;
+  players = []
+
+  player_one = DPlayer.Player('Player 1')
+  player_one.draw_hand()
+  player_one.print_all()
+  players.append(player_one)
+
+  player_two = DPlayer.Player('Player 2')
+  player_two.draw_hand()
+  player_two.print_all()
+  players.append(player_two)
+
+  n_players = len(players)
+  n_turns = 10;
   for i in range(n_turns):  
+    
     # A turn has the following actions in order:
     #  - Play action cards
     #  - Play money in any order
@@ -109,11 +88,17 @@ def main() :
     #  - Discard remaining cards in hand
     #  - Draw a new hand of 5 cards
     logging.info('\n === Turn ' + str(i+1) + ' === ')
-    dumb_buy_CE_only()
-    discard_hand()
-    draw_hand()
-    print_all()
+
+    active_player_index = i % n_players
+    active_player = players[active_player_index]
+
+    dumb_buy_CE_only(active_player)
+    active_player.discard_hand()
+    active_player.draw_hand()
+    active_player.print_all()
+
     if is_game_over(): break 
+
 
 if __name__ == "__main__":
   main()
