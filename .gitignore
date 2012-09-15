@@ -25,3 +25,9 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+
+# Vim swp files
+.*.swp
+
+# Backup files
+*~
