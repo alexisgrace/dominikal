@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import logging
+import DCard
 import DUtilities
 
 
@@ -12,7 +13,7 @@ class Player:
     ):
         self.name = name
         self.hand = []
-        self.library = [1]*7 + [0]*3
+        self.library = [DCard.Copper()]*7 + [DCard.Estate()]*3
         self.discard = []
         logging.info('New player: %s' % self.name)
         DUtilities.shuffle(self.library)
@@ -23,8 +24,9 @@ class Player:
         logging.info('%s status:' % self.name)
         logging.info('-------------------------------------')
         logging.info('Library  : ' + str(self.library))
-        logging.info('Hand     : ' + str(self.hand))
         logging.info('Discard  : ' + str(self.discard))
+        logging.info('Hand     : ' + str(self.hand))
+        DUtilities.print_zone_nicely(self.hand)
         logging.info('-------------------------------------')
 
 
@@ -56,7 +58,12 @@ class Player:
 
 
     def count_money(self):
-        return self.hand.count(1)
+        return DUtilities.count_money(self.hand)
+           
+    def count_victory_points(self):
+        return DUtilities.count_victory_points(
+            self.hand + self.library + self.discard
+        )
            
 
 if __name__ == '__main__':
