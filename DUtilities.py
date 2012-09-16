@@ -14,7 +14,7 @@ def shuffle(zone) :
 def count_money(zone):
     money = 0
     for card in zone:
-        money += card.value
+        money += card.treasure
     return money
 
 

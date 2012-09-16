@@ -13,12 +13,12 @@ logging.basicConfig(level=logging.INFO, format='%(message)s')
 # for now:
 # 1 = copper
 # 0 = estate
-stockpile = [DCard.Copper()]*10 + [DCard.Estate()]*10 
+stockpile = [DCard.card_dict['Copper']]*10 + [DCard.card_dict['Estate']]*10 
 
-def buy_card(player, card_type):
-    logging.info('%s is buying a card: %s.' % (player.name, card_type))
+def buy_card(player, card_name):
+    logging.info('%s is buying a card: %s.' % (player.name, card_name))
     for card in stockpile:
-        if card.__class__ is card_type:
+        if card.name is card_name:
             stockpile.remove(card)
             player.discard.append(card)
             return
@@ -29,11 +29,11 @@ def buy_card(player, card_type):
 
 def buy_estate(player):
   logging.debug('Buying an estate. Placing it in the discard pile.')
-  buy_card(player, DCard.Estate)
+  buy_card(player, 'Estate')
 
 def buy_copper(player):
   logging.debug('Buying a copper. Placing it in the discard pile.')
-  buy_card(player, DCard.Copper)
+  buy_card(player, 'Copper')
 
 def dumb_buy_CE_only(player):
   logging.debug('My Hand is : ' + str(player.hand))
@@ -61,7 +61,7 @@ def is_game_over():
 
     # game ends if there are no more estates in the stockpile
     for card in stockpile:
-        if card.__class__ is DCard.Estate:
+        if card.name is 'Estate':
             return False
 
     logging.info('--> Zero Estates left -- GAME OVER --')
